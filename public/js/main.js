@@ -25449,6 +25449,7 @@ module.exports = CityField;
 
 },{"react":172}],175:[function(require,module,exports){
 var React = require('react');
+var UNITS = require('../constants').UNITS;
 
 var fieldWrapper = {
 	padding: '0px'
@@ -25466,17 +25467,31 @@ var searchButton = {
 var SearchField = React.createClass({
 	displayName: 'SearchField',
 
+	getInitialState: function () {
+		return {
+			city: ''
+		};
+	},
 
 	componentDidMount: function () {
 		this.refs.searchInput.focus();
 	},
 
-	handleSubmit: function (e) {
-		e.preventDefault();
-		if (this.refs.searchInput.value.trim() && this.props.onNewSearch) {
-			this.props.onNewSearch(this.refs.searchInput.value);
-			this.refs.searchInput.value = '';
+	handleSubmit: function (event) {
+		event.preventDefault();
+
+		if (this.state.city && this.props.onNewSearch) {
+			this.props.onNewSearch(this.state.city);
+			this.setState({
+				city: ''
+			});
 		}
+	},
+
+	handleCityChange: function (event) {
+		this.setState({
+			city: event.target.value.trim()
+		});
 	},
 
 	render: function () {
@@ -25492,7 +25507,14 @@ var SearchField = React.createClass({
 					React.createElement(
 						'div',
 						{ style: fieldWrapper, className: 'col-xs-10' },
-						React.createElement('input', { style: searchSection, className: 'form-control input-lg rw-search-field', ref: 'searchInput', placeholder: 'Search City' })
+						React.createElement('input', {
+							style: searchSection,
+							className: 'form-control input-lg rw-search-field',
+							ref: 'searchInput',
+							placeholder: 'Search City',
+							value: this.state.city,
+							onChange: this.handleCityChange
+						})
 					),
 					React.createElement(
 						'div',
@@ -25507,60 +25529,65 @@ var SearchField = React.createClass({
 			)
 		);
 	}
-
 });
+
+SearchField.propTypes = {
+	onNewSearch: React.PropTypes.func.isRequired
+};
 
 module.exports = SearchField;
 
-},{"react":172}],176:[function(require,module,exports){
+},{"../constants":181,"react":172}],176:[function(require,module,exports){
 var React = require('react');
+var UNITS = require('../constants').UNITS;
 
 var backgroundUnit = {
-  background: '#2E6FA6',
-  color: '#ffffff'
+	background: '#2E6FA6',
+	color: '#ffffff'
 };
 
 var paddingUnit = {
-  paddingRight: '10px'
+	paddingRight: '10px'
 };
 
 var Units = React.createClass({
-  displayName: 'Units',
+	displayName: 'Units',
 
+	setImperial: function () {
+		this.props.changeUnits('imperial');
+	},
 
-  tempClick: function (e) {
-    this.props.changeTemp(e.target.innerHTML);
-  },
+	setMetric: function () {
+		this.props.changeUnits('metric');
+	},
 
-  render: function () {
+	render: function () {
+		var cClass = 'btn btn-default unit-c';
+		var fClass = 'btn btn-default unit-f';
 
-    var cClass = 'btn btn-default unit-c';
-    var fClass = 'btn btn-default unit-f';
+		if (this.props.unit == 'metric') cClass += ' selected';
+		if (this.props.unit == 'imperial') fClass += ' selected';
 
-    if (this.props.unit == 'metric') cClass += ' selected';
-    if (this.props.unit == 'imperial') fClass += ' selected';
-
-    return React.createElement(
-      'div',
-      { className: 'btn-group pull-right', role: 'group' },
-      React.createElement(
-        'button',
-        { className: cClass, onClick: this.tempClick },
-        '\xB0C'
-      ),
-      React.createElement(
-        'button',
-        { className: fClass, onClick: this.tempClick },
-        '\xB0F'
-      )
-    );
-  }
-
+		return React.createElement(
+			'div',
+			{ className: 'btn-group pull-right', role: 'group' },
+			React.createElement(
+				'button',
+				{ className: cClass, onClick: this.setMetric },
+				UNITS['metric']
+			),
+			React.createElement(
+				'button',
+				{ className: fClass, onClick: this.setImperial },
+				UNITS['imperial']
+			)
+		);
+	}
 });
 
 module.exports = Units;
 
-},{"react":172}],177:[function(require,module,exports){
+},{"../constants":181,"react":172}],177:[function(require,module,exports){
 var React = require('react');
 var HTTP = require('../services/weatherservice.js');
 var WeatherToday = require('./WeatherToday.jsx');
@@ -25571,11 +25598,10 @@ var CityField = require('./CityField.jsx');
 var WeatherApp = React.createClass({
 	displayName: 'WeatherApp',
 
-
 	getInitialState: function () {
 		return {
 			weather: null,
-			units: "metric",
+			units: 'metric',
 			search: '',
 			icon: ''
 		};
@@ -25587,20 +25613,14 @@ var WeatherApp = React.createClass({
 		}.bind(this));
 	},
 
-	changeUnits: function (temp) {
-		if (temp == '°C') {
-			this.setState({ units: 'metric' }, function (search) {
-				HTTP.get(this.state.search + '&units=' + this.state.units).then(function (data) {
-					this.setState({ weather: data });
-				}.bind(this));
+	handleChangeUnits: function (units) {
+		this.setState({ units: units }, function (search) {
+			HTTP.get(this.state.search + '&units=' + this.state.units).then(data => {
+				this.setState({
+					weather: data
+				});
 			});
-		} else if (temp == '°F') {
-			this.setState({ units: 'imperial' }, function (search) {
-				HTTP.get(this.state.search + '&units=' + this.state.units).then(function (data) {
-					this.setState({ weather: data });
-				}.bind(this));
-			});
-		}
+		});
 	},
 
 	render: function () {
@@ -25620,35 +25640,35 @@ var WeatherApp = React.createClass({
 			'div',
 			{ style: weatherHeader, className: 'rw-container' },
 			React.createElement(SearchField, { ref: 'searchSection', onNewSearch: this.handleSearch }),
-			(() => {
-				if (this.state.weather) {
-					return React.createElement(
-						'div',
-						{ className: 'weather-widget ' },
-						React.createElement(WeatherToday, {
-							cityName: this.state.weather.city.name,
-							countryCode: this.state.weather.city.country,
-							date: this.state.weather.list[0].dt_txt,
-							temperature: this.state.weather.list[0].main.temp,
-							description: this.state.weather.list[0].weather[0].description,
-							changeUnits: this.changeUnits,
-							units: this.state.units,
-							icon: this.state.weather.list[0].weather[0].icon
-						}),
-						React.createElement(WeatherFuture, {
-							tempList: this.state.weather.list,
-							units: this.state.units
-						})
-					);
-				}
-			})()
+			this.state.weather && this.renderWeather()
+		);
+	},
+
+	renderWeather: function () {
+		return React.createElement(
+			'div',
+			{ className: 'weather-widget' },
+			React.createElement(WeatherToday, {
+				cityName: this.state.weather.city.name,
+				countryCode: this.state.weather.city.country,
+				date: this.state.weather.list[0].dt_txt,
+				temperature: this.state.weather.list[0].main.temp,
+				description: this.state.weather.list[0].weather[0].description,
+				changeUnits: this.handleChangeUnits,
+				units: this.state.units,
+				icon: this.state.weather.list[0].weather[0].icon
+			}),
+			React.createElement(WeatherFuture, {
+				tempList: this.state.weather.list,
+				units: this.state.units
+			})
 		);
 	}
 });
 
 module.exports = WeatherApp;
 
-},{"../services/weatherservice.js":182,"./CityField.jsx":174,"./SearchField.jsx":175,"./WeatherFuture.jsx":178,"./WeatherToday.jsx":180,"react":172}],178:[function(require,module,exports){
+},{"../services/weatherservice.js":183,"./CityField.jsx":174,"./SearchField.jsx":175,"./WeatherFuture.jsx":178,"./WeatherToday.jsx":180,"react":172}],178:[function(require,module,exports){
 var React = require('react');
 var WeatherFutureItem = require('./WeatherFutureItem.jsx');
 var moment = require('moment');
@@ -25786,6 +25806,7 @@ module.exports = WeatherFutureItem;
 var React = require('react');
 
 var Units = require('./Units.jsx');
+var UNITS = require('../constants').UNITS;
 
 var weatherToday = {
 	color: '#FFFFFF',
@@ -25811,14 +25832,6 @@ var descriptionInfo = {
 	color: ''
 };
 
-var tempEval = function (unit) {
-	if (unit == 'metric') {
-		return '°c';
-	} else if (unit == 'imperial') {
-		return '°f';
-	}
-};
-
 var showIcon = function (icon) {
 	return 'http://openweathermap.org/img/w/' + icon + '.png';
 };
@@ -25826,11 +25839,12 @@ var showIcon = function (icon) {
 var WeatherToday = React.createClass({
 	displayName: 'WeatherToday',
 
-	changeTemp: function (unit) {
+	changeUnits: function (unit) {
 		this.props.changeUnits(unit);
 	},
 
 	render: function () {
+		var units = UNITS[this.props.units].toLowerCase();
 
 		return React.createElement(
 			'div',
@@ -25845,7 +25859,7 @@ var WeatherToday = React.createClass({
 						'h1',
 						null,
 						Math.round(this.props.temperature),
-						tempEval(this.props.units)
+						units
 					)
 				),
 				React.createElement(
@@ -25882,7 +25896,7 @@ var WeatherToday = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'col-sm-6' },
-					React.createElement(Units, { changeTemp: this.changeTemp, unit: this.props.units })
+					React.createElement(Units, { changeUnits: this.changeUnits, unit: this.props.units })
 				)
 			)
 		);
@@ -25891,19 +25905,29 @@ var WeatherToday = React.createClass({
 
 module.exports = WeatherToday;
 
-},{"./Units.jsx":176,"react":172}],181:[function(require,module,exports){
+},{"../constants":181,"./Units.jsx":176,"react":172}],181:[function(require,module,exports){
+var UNITS = {
+	'metric': '°C',
+	'imperial': '°F'
+};
+
+module.exports = {
+	UNITS: UNITS
+};
+
+},{}],182:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
 var WeatherApp = require('./components/WeatherApp.jsx');
 
 ReactDOM.render(React.createElement(WeatherApp, null), document.getElementById('reactive-weather'));
 
-},{"./components/WeatherApp.jsx":177,"react":172,"react-dom":29}],182:[function(require,module,exports){
+},{"./components/WeatherApp.jsx":177,"react":172,"react-dom":29}],183:[function(require,module,exports){
 var Fetch = require('whatwg-fetch');
 var baseUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=';
 
 // Add Your API Key
-var apiKey = '526908377e8bf3fe90ff6346045ba557';
+var apiKey = 'yourApiKey';
 
 var weatherService = {
 	get: function (url) {
@@ -25915,4 +25939,4 @@ var weatherService = {
 
 module.exports = weatherService;
 
-},{"whatwg-fetch":173}]},{},[181]);
+},{"whatwg-fetch":173}]},{},[182]);

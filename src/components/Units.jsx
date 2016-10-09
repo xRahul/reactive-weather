@@ -1,4 +1,5 @@
 var React = require('react');
+var UNITS = require('../constants').UNITS;
 
 var backgroundUnit = {
 	background: '#2E6FA6',
@@ -10,13 +11,15 @@ var paddingUnit = {
 }
 
 var Units = React.createClass({
+	setImperial: function() {
+		this.props.changeUnits('imperial');
+	},
 
-	tempClick: function(e) {
-		this.props.changeTemp(e.target.innerHTML);
+	setMetric: function() {
+		this.props.changeUnits('metric');
 	},
 
 	render: function() {
-
         var cClass = 'btn btn-default unit-c';
         var fClass = 'btn btn-default unit-f';
 
@@ -27,12 +30,11 @@ var Units = React.createClass({
 
 		return (
             <div className="btn-group pull-right" role="group">
-                <button className={cClass} onClick={this.tempClick}>°C</button>
-                <button className={fClass} onClick={this.tempClick}>°F</button>
+                <button className={cClass} onClick={this.setMetric}>{UNITS['metric']}</button>
+                <button className={fClass} onClick={this.setImperial}>{UNITS['imperial']}</button>
             </div>
-			);
+		);
 	}
-
 });
 
 module.exports = Units;

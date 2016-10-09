@@ -7,13 +7,11 @@ var CityField = require('./CityField.jsx');
 
 
 var WeatherApp = React.createClass({
-
-
 	getInitialState: function() {
 		return (
 		{
 			weather: null,
-			units: "metric",
+			units: 'metric',
 			search: '',
 			icon: ''
 		}
@@ -26,21 +24,15 @@ var WeatherApp = React.createClass({
 		}.bind(this));
 	},
 
-	changeUnits: function(temp) {
-		if(temp == '°C') {
-			this.setState({units: 'metric'}, function(search) {
-				HTTP.get(this.state.search + '&units=' + this.state.units).then(function(data) {
-					this.setState({weather: data});
-				}.bind(this));
-			})
-		} else if(temp == '°F') {
-			this.setState({units: 'imperial'}, function(search) {
-				HTTP.get(this.state.search + '&units=' + this.state.units).then(function(data) {
-					this.setState({weather: data});
-				}.bind(this));
-			})
-
-		}
+	handleChangeUnits: function(units) {
+		this.setState({units: units}, function(search) {
+			HTTP.get(this.state.search + '&units=' + this.state.units)
+				.then((data) => {
+					this.setState({
+						weather: data
+					});
+				});
+		});
 	},
 
 	render: function() {
@@ -60,32 +52,31 @@ var WeatherApp = React.createClass({
 
 		return (
 			<div style={weatherHeader} className="rw-container">
-			<SearchField ref="searchSection" onNewSearch={this.handleSearch} />
-			{(() => {
-				if (this.state.weather) {
-					return (
-						<div className="weather-widget ">
-						<WeatherToday 
-						cityName={this.state.weather.city.name} 
-						countryCode={this.state.weather.city.country}
-						date={this.state.weather.list[0].dt_txt}
-						temperature={this.state.weather.list[0].main.temp}
-						description={this.state.weather.list[0].weather[0].description}
-						changeUnits={this.changeUnits}
-						units={this.state.units}
-						icon={this.state.weather.list[0].weather[0].icon}
-						/>
-						<WeatherFuture
-						tempList={this.state.weather.list}
-						units={this.state.units}
-						/>
-						</div>
-						);
-				}
-			})()}
-
+			    <SearchField ref="searchSection" onNewSearch={this.handleSearch} />
+				{this.state.weather && this.renderWeather()}
 			</div>
 			);
+	},
+
+	renderWeather: function() {
+		return (
+			<div className="weather-widget">
+				<WeatherToday
+					cityName={this.state.weather.city.name}
+					countryCode={this.state.weather.city.country}
+					date={this.state.weather.list[0].dt_txt}
+					temperature={this.state.weather.list[0].main.temp}
+					description={this.state.weather.list[0].weather[0].description}
+					changeUnits={this.handleChangeUnits}
+					units={this.state.units}
+					icon={this.state.weather.list[0].weather[0].icon}
+				/>
+				<WeatherFuture
+					tempList={this.state.weather.list}
+					units={this.state.units}
+				/>
+			</div>
+		);
 	}
 });
 
