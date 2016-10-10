@@ -16,13 +16,20 @@ var Units = React.createClass({
 	},
 
 	render: function() {
+
+        var cClass = 'btn btn-default unit-c';
+        var fClass = 'btn btn-default unit-f';
+
+        if(this.props.unit == 'metric')
+            cClass += ' selected';
+        if(this.props.unit == 'imperial')
+            fClass += ' selected';
+
 		return (
-			<div style={paddingUnit} className="pull-right">
-			<div className="btn-group" role="group">
-			<button style={this.props.unit == 'metric' ? backgroundUnit: null} className="btn btn-default" onClick={this.tempClick}>°C</button>
-			<button style={this.props.unit == 'imperial' ?backgroundUnit: null} className="btn btn-default" onClick={this.tempClick}>°F</button>
-			</div>
-			</div>
+            <div className="btn-group pull-right" role="group">
+                <button className={cClass} onClick={this.tempClick}>°C</button>
+                <button className={fClass} onClick={this.tempClick}>°F</button>
+            </div>
 			);
 	}
 

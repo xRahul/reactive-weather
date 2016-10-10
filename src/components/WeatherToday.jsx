@@ -23,7 +23,7 @@ var tempInfo = {
 }
 
 var descriptionInfo = {
-	color: '#f4f4f4',
+	color: '',
 }
 
 var tempEval = function(unit) {
@@ -47,18 +47,24 @@ var WeatherToday = React.createClass({
 
 		return (
 			<div className="row">
-			<div style={weatherToday} className="col-md-12">
-			<Units changeTemp={this.changeTemp} unit={this.props.units} />
-			<div style={cityStyle} className="col-xs-9 col-md-4">
-			<h5>{this.props.cityName}, {this.props.countryCode}</h5>
-			<p>Today at {this.props.date.substring(11, 16)}</p>
-			</div>
-			<div style={weatherInfoStyle} className="col-xs-12 text-center">
-			<img src={showIcon(this.props.icon)} />
-			<h1 style={tempInfo}>{Math.round(this.props.temperature)}{tempEval(this.props.units)}</h1>
-			<p style={descriptionInfo}>{this.props.description}</p>
-			</div>
-			</div>
+                <div className="col-xs-12 rw-today-info">
+                    <div className="col-xs-6 text-right">
+                        <h1>{Math.round(this.props.temperature)}{tempEval(this.props.units)}</h1>
+                    </div>
+                    <div className="col-xs-6 text-left">
+                        <img src={showIcon(this.props.icon)} />
+                        <p style={descriptionInfo}>{this.props.description}</p>
+                    </div>
+                </div>
+                <div style={weatherToday} className="col-xs-12 rw-today">
+                    <div className="col-sm-6 rw-today-city">
+                        <h5>{this.props.cityName}, {this.props.countryCode}</h5>
+                        <small>Today at {this.props.date.substring(11, 16)}</small>
+                    </div>
+                    <div className="col-sm-6">
+                        <Units changeTemp={this.changeTemp} unit={this.props.units} />
+                    </div>
+                </div>
 			</div>
 			)
 

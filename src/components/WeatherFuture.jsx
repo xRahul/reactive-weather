@@ -41,12 +41,12 @@ var WeatherFuture = React.createClass({
 		return (
 			<div className="row">
 			<div className="col-xs-12">
-			<table style={tableStyle} className="table table-striped text-center">
+			<table style={tableStyle} className="table table-striped table-hover rw-weather-table">
 			<thead>
 			<tr>
-			<th className="col-md-3 text-center">Day</th>
-			<th className="col-md-3 text-center">Temperature</th>
-			<th className="col-md-3 text-center">Description</th>
+			<th className="col-md-3 text-left rw-day">Day</th>
+			<th className="col-md-3 text-center rw-temperature">Temperature</th>
+			<th className="col-md-3 text-right rw-description">Description</th>
 			</tr>
 			</thead>
 			<tbody>

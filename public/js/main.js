@@ -5509,7 +5509,6 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 },{}],28:[function(require,module,exports){
 // shim for using process in browser
-
 var process = module.exports = {};
 
 // cached from whatever global is present so that test runners that stub it
@@ -5520,22 +5519,84 @@ var process = module.exports = {};
 var cachedSetTimeout;
 var cachedClearTimeout;
 
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
 (function () {
-  try {
-    cachedSetTimeout = setTimeout;
-  } catch (e) {
-    cachedSetTimeout = function () {
-      throw new Error('setTimeout is not defined');
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
     }
-  }
-  try {
-    cachedClearTimeout = clearTimeout;
-  } catch (e) {
-    cachedClearTimeout = function () {
-      throw new Error('clearTimeout is not defined');
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
     }
-  }
 } ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
 var queue = [];
 var draining = false;
 var currentQueue;
@@ -5560,7 +5621,7 @@ function drainQueue() {
     if (draining) {
         return;
     }
-    var timeout = cachedSetTimeout(cleanUpNextTick);
+    var timeout = runTimeout(cleanUpNextTick);
     draining = true;
 
     var len = queue.length;
@@ -5577,7 +5638,7 @@ function drainQueue() {
     }
     currentQueue = null;
     draining = false;
-    cachedClearTimeout(timeout);
+    runClearTimeout(timeout);
 }
 
 process.nextTick = function (fun) {
@@ -5589,7 +5650,7 @@ process.nextTick = function (fun) {
     }
     queue.push(new Item(fun, args));
     if (queue.length === 1 && !draining) {
-        cachedSetTimeout(drainQueue, 0);
+        runTimeout(drainQueue);
     }
 };
 
@@ -25378,7 +25439,7 @@ var CityField = React.createClass({
 	render: function () {
 
 		return React.createElement("input", {
-			className: "form-control",
+			className: "form-control rw-city-field",
 			placeholder: "City,Country",
 			value: this.state.cityName });
 	}
@@ -25427,19 +25488,19 @@ var SearchField = React.createClass({
 				{ className: 'col-md-12' },
 				React.createElement(
 					'form',
-					{ onSubmit: this.handleSubmit },
+					{ onSubmit: this.handleSubmit, className: 'rw-search-form clearfix' },
 					React.createElement(
 						'div',
-						{ style: fieldWrapper, className: 'col-xs-9' },
-						React.createElement('input', { style: searchSection, className: 'form-control', ref: 'searchInput', placeholder: 'Search City' })
+						{ style: fieldWrapper, className: 'col-xs-10' },
+						React.createElement('input', { style: searchSection, className: 'form-control input-lg rw-search-field', ref: 'searchInput', placeholder: 'Search City' })
 					),
 					React.createElement(
 						'div',
-						{ style: fieldWrapper, className: 'col-xs-3' },
+						{ style: fieldWrapper, className: 'col-xs-2 text-right' },
 						React.createElement(
 							'button',
-							{ style: searchButton, className: 'btn btn-primary btn-block' },
-							'Search'
+							{ className: 'btn btn-default btn-lg rw-search-btn' },
+							'Go'
 						)
 					)
 				)
@@ -25455,42 +25516,45 @@ module.exports = SearchField;
 var React = require('react');
 
 var backgroundUnit = {
-	background: '#2E6FA6',
-	color: '#ffffff'
+  background: '#2E6FA6',
+  color: '#ffffff'
 };
 
 var paddingUnit = {
-	paddingRight: '10px'
+  paddingRight: '10px'
 };
 
 var Units = React.createClass({
-	displayName: 'Units',
+  displayName: 'Units',
 
 
-	tempClick: function (e) {
-		this.props.changeTemp(e.target.innerHTML);
-	},
+  tempClick: function (e) {
+    this.props.changeTemp(e.target.innerHTML);
+  },
 
-	render: function () {
-		return React.createElement(
-			'div',
-			{ style: paddingUnit, className: 'pull-right' },
-			React.createElement(
-				'div',
-				{ className: 'btn-group', role: 'group' },
-				React.createElement(
-					'button',
-					{ style: this.props.unit == 'metric' ? backgroundUnit : null, className: 'btn btn-default', onClick: this.tempClick },
-					'°C'
-				),
-				React.createElement(
-					'button',
-					{ style: this.props.unit == 'imperial' ? backgroundUnit : null, className: 'btn btn-default', onClick: this.tempClick },
-					'°F'
-				)
-			)
-		);
-	}
+  render: function () {
+
+    var cClass = 'btn btn-default unit-c';
+    var fClass = 'btn btn-default unit-f';
+
+    if (this.props.unit == 'metric') cClass += ' selected';
+    if (this.props.unit == 'imperial') fClass += ' selected';
+
+    return React.createElement(
+      'div',
+      { className: 'btn-group pull-right', role: 'group' },
+      React.createElement(
+        'button',
+        { className: cClass, onClick: this.tempClick },
+        '\xB0C'
+      ),
+      React.createElement(
+        'button',
+        { className: fClass, onClick: this.tempClick },
+        '\xB0F'
+      )
+    );
+  }
 
 });
 
@@ -25554,7 +25618,7 @@ var WeatherApp = React.createClass({
 
 		return React.createElement(
 			'div',
-			{ style: weatherHeader },
+			{ style: weatherHeader, className: 'rw-container' },
 			React.createElement(SearchField, { ref: 'searchSection', onNewSearch: this.handleSearch }),
 			(() => {
 				if (this.state.weather) {
@@ -25633,7 +25697,7 @@ var WeatherFuture = React.createClass({
 				{ className: 'col-xs-12' },
 				React.createElement(
 					'table',
-					{ style: tableStyle, className: 'table table-striped text-center' },
+					{ style: tableStyle, className: 'table table-striped table-hover rw-weather-table' },
 					React.createElement(
 						'thead',
 						null,
@@ -25642,17 +25706,17 @@ var WeatherFuture = React.createClass({
 							null,
 							React.createElement(
 								'th',
-								{ className: 'col-md-3 text-center' },
+								{ className: 'col-md-3 text-left rw-day' },
 								'Day'
 							),
 							React.createElement(
 								'th',
-								{ className: 'col-md-3 text-center' },
+								{ className: 'col-md-3 text-center rw-temperature' },
 								'Temperature'
 							),
 							React.createElement(
 								'th',
-								{ className: 'col-md-3 text-center' },
+								{ className: 'col-md-3 text-right rw-description' },
 								'Description'
 							)
 						)
@@ -25692,24 +25756,24 @@ var WeatherFutureItem = React.createClass({
 	render: function () {
 		return React.createElement(
 			'tr',
-			null,
+			{ className: 'rw-future-item' },
 			React.createElement(
 				'td',
-				null,
+				{ className: 'rw-fi-date text-left' },
 				this.props.date
 			),
 			React.createElement(
 				'td',
-				null,
+				{ className: 'rw-fi-temperature text-center' },
 				this.props.temp,
 				' ',
-				tempEval(this.props.units)
+				tempEval(this.props.units),
+				' ',
+				React.createElement('img', { height: '30px', src: showIcon(this.props.icon) })
 			),
 			React.createElement(
 				'td',
-				null,
-				React.createElement('img', { height: '20px', src: showIcon(this.props.icon) }),
-				' ',
+				{ className: 'rw-fi-description text-right' },
 				this.props.description
 			)
 		);
@@ -25744,7 +25808,7 @@ var tempInfo = {
 };
 
 var descriptionInfo = {
-	color: '#f4f4f4'
+	color: ''
 };
 
 var tempEval = function (unit) {
@@ -25773,11 +25837,34 @@ var WeatherToday = React.createClass({
 			{ className: 'row' },
 			React.createElement(
 				'div',
-				{ style: weatherToday, className: 'col-md-12' },
-				React.createElement(Units, { changeTemp: this.changeTemp, unit: this.props.units }),
+				{ className: 'col-xs-12 rw-today-info' },
 				React.createElement(
 					'div',
-					{ style: cityStyle, className: 'col-xs-9 col-md-4' },
+					{ className: 'col-xs-6 text-right' },
+					React.createElement(
+						'h1',
+						null,
+						Math.round(this.props.temperature),
+						tempEval(this.props.units)
+					)
+				),
+				React.createElement(
+					'div',
+					{ className: 'col-xs-6 text-left' },
+					React.createElement('img', { src: showIcon(this.props.icon) }),
+					React.createElement(
+						'p',
+						{ style: descriptionInfo },
+						this.props.description
+					)
+				)
+			),
+			React.createElement(
+				'div',
+				{ style: weatherToday, className: 'col-xs-12 rw-today' },
+				React.createElement(
+					'div',
+					{ className: 'col-sm-6 rw-today-city' },
 					React.createElement(
 						'h5',
 						null,
@@ -25786,7 +25873,7 @@ var WeatherToday = React.createClass({
 						this.props.countryCode
 					),
 					React.createElement(
-						'p',
+						'small',
 						null,
 						'Today at ',
 						this.props.date.substring(11, 16)
@@ -25794,19 +25881,8 @@ var WeatherToday = React.createClass({
 				),
 				React.createElement(
 					'div',
-					{ style: weatherInfoStyle, className: 'col-xs-12 text-center' },
-					React.createElement('img', { src: showIcon(this.props.icon) }),
-					React.createElement(
-						'h1',
-						{ style: tempInfo },
-						Math.round(this.props.temperature),
-						tempEval(this.props.units)
-					),
-					React.createElement(
-						'p',
-						{ style: descriptionInfo },
-						this.props.description
-					)
+					{ className: 'col-sm-6' },
+					React.createElement(Units, { changeTemp: this.changeTemp, unit: this.props.units })
 				)
 			)
 		);
@@ -25820,7 +25896,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var WeatherApp = require('./components/WeatherApp.jsx');
 
-ReactDOM.render(React.createElement(WeatherApp, { appBackground: '#000000' }), document.getElementById('reactive-weather'));
+ReactDOM.render(React.createElement(WeatherApp, null), document.getElementById('reactive-weather'));
 
 },{"./components/WeatherApp.jsx":177,"react":172,"react-dom":29}],182:[function(require,module,exports){
 var Fetch = require('whatwg-fetch');

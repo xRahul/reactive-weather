@@ -1,0 +1,123 @@
+/* Placeholder: bootstrap overrides */
+.rw-search-form input.form-control::-webkit-input-placeholder{color: rgba(255,255,255,.7); font-style: italic;}
+.rw-search-form input.form-control:-moz-placeholder{color: rgba(255,255,255,.7); font-style: italic;}
+.rw-search-form input.form-control::-moz-placeholder{color: rgba(255,255,255,.7); font-style: italic;}
+.rw-search-form input.form-control:-ms-input-placeholder{color: rgba(255,255,255,.7); font-style: italic;}
+
+/* Outline: bootstrap overrides */
+.rw-search-form .rw-search-field,
+.rw-search-form .rw-search-field:focus,
+.rw-search-form .rw-search-btn,
+.rw-search-form .rw-search-btn:focus{
+    outline: none;
+    box-shadow: none;
+    border-color: transparent;
+}
+
+/* Widget Container */
+.rw-container{
+    background: #00B2B2;
+}
+.rw-container .weather-widget{}
+
+/* Search Form */
+.rw-search-form{
+    margin: 10px;
+    border-radius: 5px;
+    background: #059c9c;
+}
+.rw-search-form .rw-search-field{
+    color: #FFF;
+    font-weight: 300;
+    background: transparent;
+}
+
+.rw-search-form .rw-search-btn{
+    color: #FFF;
+    font-weight: 500;
+    border-radius: 0;
+    background: transparent;
+}
+
+/* Weather Today */
+.rw-today{
+    padding-bottom: 10px;
+}
+.rw-today-info{
+    padding: 20px 0;
+    color: #FFF;
+}
+.rw-today-info h1{
+    font-size: 70px;
+    font-weight: 300;
+    letter-spacing: 0;
+    margin: 0;
+    padding: 0;
+}
+.rw-today-city{
+    color: rgba(255,255,255,.9);
+}
+.rw-today-city h5{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.rw-today-info p{
+    text-transform: capitalize;
+}
+
+/* Units */
+.unit-c, .unit-f{
+    color: rgba(255,255,255,.5);
+}
+.unit-c, .unit-f,
+.unit-c:focus, .unit-f:focus{
+    border: none;
+    outline: none;
+    box-shadow: none;
+    border-color: transparent;
+    background: transparent;
+}
+
+.unit-c:hover, .unit-f:hover{
+    color: #FFF;
+    background: transparent;
+}
+
+.unit-c:focus:hover, .unit-f:focus:hover{
+    color: #FFF;
+    box-shadow: none;
+    background: #059c9c;
+    border-radius: 2px;
+    outline: none;
+}
+
+.unit-c.selected, .unit-f.selected,
+.unit-c:focus, .unit-f:focus{
+    color: #FFF;
+    box-shadow: none;
+    background: #059c9c;
+    border-radius: 4px !important;
+}
+
+/* Weather Forecast Table */
+.rw-weather-table{
+}
+.rw-weather-table thead{
+    display: none;
+}
+.rw-weather-table tbody{
+    color: #666;
+}
+.rw-weather-table .table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #DDD;
+}
+table.table.rw-weather-table td{
+    width: 33%;
+    padding: 12px;
+    vertical-align: middle;
+}
+
+/* Weather Future Table */
+.rw-fi-description{
+    text-transform: capitalize;
+}

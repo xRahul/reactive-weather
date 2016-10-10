@@ -10,7 +10,7 @@ var CityField = React.createClass({
 	
 		return (
 				<input
-				className="form-control"
+				className="form-control rw-city-field"
 				placeholder="City,Country"
 				value={this.state.cityName} />
 			);

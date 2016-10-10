@@ -16,10 +16,10 @@ var WeatherFutureItem = React.createClass({
 
 	render: function() {
 		return (
-			<tr>
-			<td>{this.props.date}</td>
-			<td>{this.props.temp} {tempEval(this.props.units)}</td>
-			<td><img height='20px' src={showIcon(this.props.icon)} /> {this.props.description}</td>
+			<tr className="rw-future-item">
+                <td className="rw-fi-date text-left">{this.props.date}</td>
+                <td className="rw-fi-temperature text-center">{this.props.temp} {tempEval(this.props.units)} <img height='30px' src={showIcon(this.props.icon)} /></td>
+                <td className="rw-fi-description text-right">{this.props.description}</td>
 			</tr>
 			);
 	}

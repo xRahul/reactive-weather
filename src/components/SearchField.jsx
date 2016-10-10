@@ -30,16 +30,16 @@ var SearchField = React.createClass({
 	render: function() {
 		return (
 			<div className="row">
-			<div className="col-md-12">
-			<form onSubmit={this.handleSubmit} > 
-			<div style={fieldWrapper} className="col-xs-9">
-				<input style={searchSection} className="form-control" ref="searchInput" placeholder="Search City" />
-			</div>
-			<div style={fieldWrapper} className="col-xs-3">
-				<button style={searchButton} className="btn btn-primary btn-block">Search</button>
-				</div>	
-			</form>
-			</div>
+                <div className="col-md-12">
+                    <form onSubmit={this.handleSubmit} className="rw-search-form clearfix">
+                        <div style={fieldWrapper} className="col-xs-10">
+                            <input style={searchSection} className="form-control input-lg rw-search-field" ref="searchInput" placeholder="Search City" />
+                        </div>
+                        <div style={fieldWrapper} className="col-xs-2 text-right">
+                            <button className="btn btn-default btn-lg rw-search-btn">Go</button>
+                        </div>
+                    </form>
+                </div>
 			</div>
 			);
 	}
