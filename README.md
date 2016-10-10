@@ -1,7 +1,13 @@
 # Reactive Weather
->Simple realtime weather widget, created with ReactJS and Bootstrap. Since there's really not much styling in place, it's easy to replace it with a different CSS framework of choice.
+>Simple realtime weather widget, created with ReactJS and Bootstrap. Since there's really not much styling in place, it's fairly easy to replace it with a different CSS framework of choice. Made as a [**hacktoberfest**](https://hacktoberfest.digitalocean.com/) educational project that can be used as a intro to coding with React.
 
-![Alt Text](https://github.com/bobeta/reactive-weather/raw/master/reactive-weather.gif)
+## Initial Version
+
+![Alt Text](https://github.com/bobeta/reactive-weather/raw/master/showcase/reactive-weather-initial.gif)
+
+## Updated version with the default theme
+
+![Alt Text](https://github.com/bobeta/reactive-weather/raw/master/showcase/reactive-weather-default-theme.gif)
 
 ## Features
 
@@ -69,7 +75,8 @@ You are welcome to contribute to the project if you like, please read [**contrib
 
 [**Reactive Weather**](https://github.com/bobeta/reactive-weather) was created as a [**hacktoberfest**](https://hacktoberfest.digitalocean.com/) educational project by [**Moris Pasic**](https://github.com/bobeta).
 
-Future contributors will be listed here. And finally thank you for showing interest!
+Big thanks to our **contributors**:
+[**Davoscript**](https://github.com/davoscript), [**LlinksRechts**](https://github.com/LlinksRechts) 
 
 ## License
 ```
