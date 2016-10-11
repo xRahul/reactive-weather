@@ -1,0 +1,185 @@
+//colors
+$white_70: rgba(255,255,255,.7);
+$color_pacific_blue_approx: #00b2b2;
+$color_persian_green_approx: #059c9c;
+$white: #fff;
+$white_90: rgba(255,255,255,.9);
+$white_50: rgba(255,255,255,.5);
+$color_storm_dust_approx: #666;
+$color_alto_approx: #ddd;
+
+//@extend-elements
+//original selectors
+//.rw-search-form .rw-search-field, .rw-search-form .rw-search-field:focus, .rw-search-form .rw-search-btn, .rw-search-form .rw-search-btn:focus
+%extend_1 {
+	outline: none;
+	//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: none;
+	border-color: transparent;
+}
+
+//original selectors
+//.unit-c, .unit-f, .unit-c:focus, .unit-f:focus
+%extend_2 {
+	border: none;
+	outline: none;
+	//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: none;
+	border-color: transparent;
+	background: transparent;
+}
+
+//original selectors
+//.unit-c:focus:hover, .unit-f:focus:hover
+%extend_3 {
+	color: $white;
+	//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: none;
+	background: $color_persian_green_approx;
+	//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+	border-radius: 2px;
+	outline: none;
+}
+
+//original selectors
+//.unit-c.selected, .unit-f.selected, .unit-c:focus, .unit-f:focus
+%extend_4 {
+	color: $white;
+	//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+	box-shadow: none;
+	background: $color_persian_green_approx;
+	//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+	border-radius: 4px !important;
+}
+
+
+.rw-search-form {
+	margin: 10px;
+	//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+	border-radius: 5px;
+	background: $color_persian_green_approx;
+	input {
+		&.form-control::-webkit-input-placeholder {
+			color: $white_70;
+			font-style: italic;
+		}
+		&.form-control {
+			&:-moz-placeholder {
+				color: $white_70;
+				font-style: italic;
+			}
+			&:-ms-input-placeholder {
+				color: $white_70;
+				font-style: italic;
+			}
+		}
+		&.form-control::-moz-placeholder {
+			color: $white_70;
+			font-style: italic;
+		}
+	}
+	.rw-search-field {
+		@extend %extend_1;
+		color: $white;
+		font-weight: 300;
+		background: transparent;
+		&:focus {
+			@extend %extend_1;
+		}
+	}
+	.rw-search-btn {
+		@extend %extend_1;
+		color: $white;
+		font-weight: 500;
+		//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+		border-radius: 0;
+		background: transparent;
+		&:focus {
+			@extend %extend_1;
+		}
+	}
+}
+.rw-container {
+	background: $color_pacific_blue_approx;
+	.weather-widget {
+	}
+}
+.rw-today {
+	padding-bottom: 10px;
+}
+.rw-today-info {
+	padding: 20px 0;
+	color: $white;
+	h1 {
+		font-size: 70px;
+		font-weight: 300;
+		letter-spacing: 0;
+		margin: 0;
+		padding: 0;
+	}
+	p {
+		text-transform: capitalize;
+	}
+}
+.rw-today-city {
+	color: $white_90;
+	h5 {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+}
+.unit-c {
+	color: $white_50;
+	@extend %extend_2;
+	&:focus {
+		@extend %extend_2;
+		@extend %extend_4;
+		&:hover {
+			@extend %extend_3;
+		}
+	}
+	&:hover {
+		color: $white;
+		background: transparent;
+	}
+	&.selected {
+		@extend %extend_4;
+	}
+}
+.unit-f {
+	color: $white_50;
+	@extend %extend_2;
+	&:focus {
+		@extend %extend_2;
+		@extend %extend_4;
+		&:hover {
+			@extend %extend_3;
+		}
+	}
+	&:hover {
+		color: $white;
+		background: transparent;
+	}
+	&.selected {
+		@extend %extend_4;
+	}
+}
+.rw-weather-table {
+	thead {
+		display: none;
+	}
+	tbody {
+		color: $color_storm_dust_approx;
+	}
+	.table-striped > tbody > tr:nth-of-type(odd) {
+		background-color: $color_alto_approx;
+	}
+}
+.rw-fi-description {
+	text-transform: capitalize;
+}
+table.table.rw-weather-table td {
+	width: 33%;
+	padding: 12px;
+	vertical-align: middle;
+}
