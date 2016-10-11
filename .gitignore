@@ -2,3 +2,5 @@ node_modules
 bower_components
 .env
 .idea/
+public/js/main.js
+src/services/weatherservice.js

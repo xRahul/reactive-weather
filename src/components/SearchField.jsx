@@ -48,11 +48,11 @@ var SearchField = React.createClass({
 				<div className="col-md-12">
 					<form onSubmit={this.handleSubmit} className="rw-search-form clearfix">
 						<div style={fieldWrapper} className="col-xs-10">
-							<input 
-								style={searchSection} 
-								className="form-control input-lg rw-search-field" 
-								ref="searchInput" 
-								placeholder="Search City"
+							<input
+								style={searchSection}
+								className="form-control input-lg rw-search-field"
+								ref="searchInput"
+								placeholder="Search City (No Spaces Please)"
 								value={this.state.city}
 								onChange={this.handleCityChange}
 							/>
