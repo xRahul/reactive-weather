@@ -1,8 +1,11 @@
 var Fetch = require('whatwg-fetch');
 var baseUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=';
 
-// Add Your API Key
-var apiKey = process.env.OPENWEATHER_API_KEY;
+// Test the API directly in the frontend
+var apiKey = 'yourApiKey';
+
+// Use this you're ready to use as environment variable
+// var apiKey = process.env.OPENWEATHER_API_KEY;
 
 var weatherService = {
 	get: function(url) {

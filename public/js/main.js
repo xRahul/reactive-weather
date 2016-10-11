@@ -25865,8 +25865,11 @@ ReactDOM.render(React.createElement(WeatherApp, null), document.getElementById('
 var Fetch = require('whatwg-fetch');
 var baseUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=';
 
-// Add Your API Key
-var apiKey = 'e34800b99dc8e230abd3c6a5051f379a';
+// Test the API directly in the frontend
+var apiKey = 'yourApiKey';
+
+// Use this you're ready to use as environment variable
+// var apiKey = process.env.OPENWEATHER_API_KEY;
 
 var weatherService = {
 	get: function (url) {
