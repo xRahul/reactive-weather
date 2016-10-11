@@ -18,27 +18,27 @@
 ## Installation
 
 Clone the package into directory of choice:
+
 ```
 git clone https://github.com/Bobeta/reactive-weather.git
 ```
 
- then run (required to have Node installed):
+then run (required to have Node installed):
 
 ```
 npm install
 ```
 
-Create your free Open Weather Map API key by signing up on [**their website**](https://openweathermap.org/) and add it to src/services/weatherservice.js in the following section:
-```
-// Add Your API Key
-var apiKey = 'yourApiKey';
-```
+Create your free Open Weather Map API key by signing up on [**their website**](https://openweathermap.org/).
 
-Run the following command to re-compile after adding API key (**ctrl + c to stop**):
+Export the API key under the `OPENWEATHER_API_KEY` environment variable.
 ```
-npm start
+export OPENWEATHER_API_KEY=your_key
 ```
-
+or launch the app with the environment variable:
+```
+OPENWEATHER_API_KEY=your_key npm start
+```
 
 ## Usage and Changes
 
@@ -47,14 +47,14 @@ Just add a tag with id of reactive-weather to wherever you want to display the w
 <div id="reactive-weather"></div>
 ```
 
-Make sure that you have main.js added as script file. There's an example usage in public/index.html. 
+Make sure that you have main.js added as script file. There's an example usage in public/index.html.
 
 All the desired changes should be made to the content in the /src directory. After you make changes to JSX files, run the following command:
 ```
 npm start
 ```
 
-The changes you make to src/main.jsx files and components in src/components will then automatically compile to public/js/main.js. To stop the process, just do **ctrl + c**. 
+The changes you make to src/main.jsx files and components in src/components will then automatically compile to public/js/main.js. To stop the process, just do **ctrl + c**.
 
 Bootstrap is already included in public/css/bootstrap.css. You can use included bower setup to add a different sass version and the following command to replace the current css with it:
 
@@ -76,7 +76,7 @@ You are welcome to contribute to the project if you like, please read [**contrib
 [**Reactive Weather**](https://github.com/bobeta/reactive-weather) was created as a [**hacktoberfest**](https://hacktoberfest.digitalocean.com/) educational project by [**Moris Pasic**](https://github.com/bobeta).
 
 Big thanks to our **contributors**:
-[**Davoscript**](https://github.com/davoscript), [**LlinksRechts**](https://github.com/LlinksRechts) 
+[**Davoscript**](https://github.com/davoscript), [**LlinksRechts**](https://github.com/LlinksRechts)
 
 ## License
 ```
