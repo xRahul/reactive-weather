@@ -37,7 +37,7 @@ var WeatherToday = React.createClass({
 	},
 
 	render: function() {
-		var units = UNITS[this.props.units].toLowerCase();
+		var units = UNITS[this.props.units];
 
 		return (
 			<div className="row">

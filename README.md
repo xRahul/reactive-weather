@@ -29,8 +29,22 @@ then run (required to have Node installed):
 npm install
 ```
 
-Create your free Open Weather Map API key by signing up on [**their website**](https://openweathermap.org/).
+Create your free Open Weather Map API key by signing up on [**their website**](https://openweathermap.org/) (it can take up to an hour before the API key starts working).
 
+## Method 1 - Play with the app, add it directly to your frontend
+(**Add the API key in src/services/weatherservice.js:**)
+
+```
+// Add Your API Key
+var apiKey = 'yourApiKey';
+```
+
+Run the following command to re-compile after adding API key (**ctrl + c to stop**):
+```
+npm start
+```
+
+## Method 2 - When you're ready to use it as environment variable
 Export the API key under the `OPENWEATHER_API_KEY` environment variable.
 ```
 export OPENWEATHER_API_KEY=your_key
@@ -39,6 +53,13 @@ or launch the app with the environment variable:
 ```
 OPENWEATHER_API_KEY=your_key npm start
 ```
+
+(**Uncomment the following section in src/services/weatherservice.js:**)
+```
+// Use this you're ready to use as environment variable
+// var apiKey = process.env.OPENWEATHER_API_KEY;
+```
+And remove the same variable declaration above it.
 
 ## Usage and Changes
 
@@ -76,7 +97,7 @@ You are welcome to contribute to the project if you like, please read [**contrib
 [**Reactive Weather**](https://github.com/bobeta/reactive-weather) was created as a [**hacktoberfest**](https://hacktoberfest.digitalocean.com/) educational project by [**Moris Pasic**](https://github.com/bobeta).
 
 Big thanks to our **contributors**:
-[**Davoscript**](https://github.com/davoscript), [**LlinksRechts**](https://github.com/LlinksRechts)
+[**Davoscript**](https://github.com/davoscript), [**LlinksRechts**](https://github.com/LlinksRechts), [**Chris911**](https://github.com/Chris911), [**nayangupta824**](https://github.com/nayangupta824), [**dimkosru**](https://github.com/dimkosru), 
 
 ## License
 ```
