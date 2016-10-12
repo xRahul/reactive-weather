@@ -5,7 +5,7 @@ var baseUrl = 'http://api.openweathermap.org/data/2.5/forecast?q=';
 var apiKey = 'yourApiKey';
 
 // Use this you're ready to use as environment variable
-// var apiKey = process.env.OPENWEATHER_API_KEY;
+// var apiKey = process.env.OPENWEATHER_API_KEY ? process.env.OPENWEATHER_API_KEY : console.error('OPENWEATHER_API_KEY not set');
 
 var weatherService = {
 	get: function(url) {
