@@ -7,7 +7,7 @@ var CityField = React.createClass({
 	},
 
 	render: function() {
-	
+
 		return (
 				<input
 				className="form-control rw-city-field"
