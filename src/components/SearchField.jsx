@@ -52,7 +52,7 @@ var SearchField = React.createClass({
 								style={searchSection}
 								className="form-control input-lg rw-search-field"
 								ref="searchInput"
-								placeholder="Search City (No Spaces Please)"
+								placeholder="City,Country"
 								value={this.state.city}
 								onChange={this.handleCityChange}
 							/>
