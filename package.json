@@ -29,8 +29,8 @@
   "dependencies": {
     "dotenv": "^2.0.0",
     "moment": "^2.13.0",
-    "react": "^15.1.0",
-    "react-dom": "^15.1.0",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0",
     "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
